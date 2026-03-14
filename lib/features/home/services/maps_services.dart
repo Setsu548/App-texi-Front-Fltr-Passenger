@@ -1,0 +1,56 @@
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+
+class MapsServices {
+  static Future<Position> getCurrentPosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.',
+      );
+    }
+
+    return await Geolocator.getCurrentPosition(
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
+    );
+  }
+
+  static Future<String?> getAddressFromPosition(Position position) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+        String address =
+            '${place.thoroughfare ?? ''} ${place.subThoroughfare ?? ''}'.trim();
+        if (address.isEmpty) {
+          address =
+              place.locality ??
+              place.subAdministrativeArea ??
+              'Ubicación desconocida';
+        }
+        return address;
+      }
+    } catch (e) {
+      return null;
+    }
+    return null;
+  }
+}
