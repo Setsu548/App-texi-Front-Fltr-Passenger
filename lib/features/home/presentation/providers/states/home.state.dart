@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class HomeState {
   final bool isLoading;
   final LatLng? currentPosition;
+  final LatLng? destinationPosition;
   final String originAddress;
   final String destinationAddress;
   final bool isSelectingOrigin;
@@ -15,6 +16,7 @@ class HomeState {
   HomeState({
     this.isLoading = true,
     this.currentPosition,
+    this.destinationPosition,
     this.originAddress = 'Obteniendo ubicación...',
     this.destinationAddress = '¿A dónde vas?',
     this.isSelectingOrigin = false,
@@ -28,6 +30,7 @@ class HomeState {
   HomeState copyWith({
     bool? isLoading,
     LatLng? currentPosition,
+    LatLng? destinationPosition,
     String? originAddress,
     String? destinationAddress,
     bool? isSelectingOrigin,
@@ -40,6 +43,7 @@ class HomeState {
     return HomeState(
       isLoading: isLoading ?? this.isLoading,
       currentPosition: currentPosition ?? this.currentPosition,
+      destinationPosition: destinationPosition ?? this.destinationPosition,
       originAddress: originAddress ?? this.originAddress,
       destinationAddress: destinationAddress ?? this.destinationAddress,
       isSelectingOrigin: isSelectingOrigin ?? this.isSelectingOrigin,
@@ -51,4 +55,5 @@ class HomeState {
       selectedQuickAction: selectedQuickAction ?? this.selectedQuickAction,
     );
   }
+
 }

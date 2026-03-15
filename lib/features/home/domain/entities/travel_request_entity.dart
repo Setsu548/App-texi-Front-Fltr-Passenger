@@ -1,6 +1,6 @@
 class TravelRequestEntity {
-  final TravelPosition origin;
-  final TravelPosition destination;
+  final TravelPositionEntity origin;
+  final TravelPositionEntity destination;
 
   TravelRequestEntity({
     required this.origin,
@@ -8,11 +8,11 @@ class TravelRequestEntity {
   });
 }
 
-class TravelPosition {
+class TravelPositionEntity {
   final double latitude;
   final double longitude;
 
-  TravelPosition({
+  TravelPositionEntity({
     required this.latitude,
     required this.longitude,
   });

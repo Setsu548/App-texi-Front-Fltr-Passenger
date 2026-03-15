@@ -18,7 +18,7 @@ class AppRouter {
   static const String homePage = '/home';
   static const String verifyCodePage = 'verify-code';
   static const String passengerProfilePage = 'passenger-profile';
-  static const String offlinePage = 'offline';
+  static const String offlinePage = '/offline';
 
   late final GoRouter router = GoRouter(
     initialLocation: authPage,

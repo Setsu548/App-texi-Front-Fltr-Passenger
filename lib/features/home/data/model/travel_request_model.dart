@@ -16,6 +16,13 @@ class TravelRequestModel {
       destination: TravelPositionModel.fromEntity(entity.destination),
     );
   }
+
+  factory TravelRequestModel.fromJson(Map<String, dynamic> json) {
+    return TravelRequestModel(
+      origin: TravelPositionModel.fromJson(json['origin']),
+      destination: TravelPositionModel.fromJson(json['destination']),
+    );
+  }
 }
 
 class TravelPositionModel {
@@ -28,10 +35,18 @@ class TravelPositionModel {
     return {'lat': latitude, 'lng': longitude};
   }
 
-  factory TravelPositionModel.fromEntity(TravelPosition entity) {
+  factory TravelPositionModel.fromEntity(TravelPositionEntity entity) {
     return TravelPositionModel(
       latitude: entity.latitude,
       longitude: entity.longitude,
     );
+  }
+
+  TravelPositionEntity toEntity() {
+    return TravelPositionEntity(latitude: latitude, longitude: longitude);
+  }
+
+  factory TravelPositionModel.fromJson(Map<String, dynamic> json) {
+    return TravelPositionModel(latitude: json['lat'], longitude: json['lng']);
   }
 }

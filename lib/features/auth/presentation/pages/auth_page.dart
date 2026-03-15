@@ -89,9 +89,6 @@ class AuthPage extends ConsumerWidget {
                             );
                           }
                         } else if (validatePassenger == true) {
-                          await ref
-                              .read(authLoginProvider.notifier)
-                              .getAuthResDataAndSaveToken(phone, ref);
                           if (context.mounted) {
                             context.go(AppRouter.homePage);
                           }

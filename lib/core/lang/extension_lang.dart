@@ -34,6 +34,9 @@ const errorGettingLocation = 'Error al obtener la ubicación';
 const destination = 'Destino';
 const solicitRequest = 'Solicitar Viaje';
 const gettingLocation = 'Obteniendo ubicación...';
+const cancel = 'Cancelar';
+const selectService = 'Seleccionar Servicio';
+const selectServiceSubtitle = 'Selecciona el servicio que deseas';
 
 extension Localization on String {
   static const _translations = ConstTranslations('es-MX', {
@@ -232,6 +235,24 @@ extension Localization on String {
       'es-ES': 'Obteniendo ubicación...',
       'es-MX': 'Obteniendo ubicación...',
       'es-BO': 'Obteniendo ubicación...',
+    },
+    cancel: {
+      'en-US': 'Cancel',
+      'es-ES': 'Cancelar',
+      'es-MX': 'Cancelar',
+      'es-BO': 'Cancelar',
+    },
+    selectService: {
+      'en-US': 'Select Service',
+      'es-ES': 'Seleccionar Servicio',
+      'es-MX': 'Seleccionar Servicio',
+      'es-BO': 'Seleccionar Servicio',
+    },
+    selectServiceSubtitle: {
+      'en-US': 'Select the service you want',
+      'es-ES': 'Selecciona el servicio que deseas',
+      'es-MX': 'Selecciona el servicio que deseas',
+      'es-BO': 'Selecciona el servicio que deseas',
     },
   });
 

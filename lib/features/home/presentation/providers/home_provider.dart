@@ -17,7 +17,6 @@ final homeProvider = NotifierProvider<HomeNotifier, HomeState>(
 
 class HomeNotifier extends Notifier<HomeState> {
   late final MapRepository _repository;
-  LatLng? _destinationLatLng;
 
   @override
   HomeState build() {
@@ -97,8 +96,8 @@ class HomeNotifier extends Notifier<HomeState> {
       await _drawPolyline();
     } else if (state.isSelectingDestination) {
       final address = await _repository.getAddressFromPosition(position);
-      _destinationLatLng = tappedPoint;
       state = state.copyWith(
+        destinationPosition: tappedPoint,
         destinationAddress: address,
         isSelectingDestination: false,
       );
@@ -159,11 +158,12 @@ class HomeNotifier extends Notifier<HomeState> {
   }
 
   Future<void> _drawPolyline() async {
-    if (state.currentPosition == null || _destinationLatLng == null) return;
+    if (state.currentPosition == null || state.destinationPosition == null)
+      return;
 
     final points = await _repository.getRoutePolyline(
       state.currentPosition!,
-      _destinationLatLng!,
+      state.destinationPosition!,
     );
 
     if (points.isNotEmpty) {
@@ -175,5 +175,10 @@ class HomeNotifier extends Notifier<HomeState> {
       );
       state = state.copyWith(polylines: {polyline});
     }
+  }
+
+  void reset() {
+    state = HomeState();
+    _init();
   }
 }
