@@ -37,6 +37,15 @@ const gettingLocation = 'Obteniendo ubicación...';
 const cancel = 'Cancelar';
 const selectService = 'Seleccionar Servicio';
 const selectServiceSubtitle = 'Selecciona el servicio que deseas';
+const status = 'Estado';
+const tripInformation = 'Información del viaje';
+const driverOnRoad = 'Conductor en camino';
+const driverArrived = 'Conductor llegó';
+const tripInProgress = 'Viaje en curso';
+const tripCompleted = 'Viaje finalizado';
+const tripCancelled = 'Viaje cancelado';
+const tripExpired = 'Viaje expirado';
+const unknownStatus = 'Estado desconocido';
 
 extension Localization on String {
   static const _translations = ConstTranslations('es-MX', {
@@ -253,6 +262,60 @@ extension Localization on String {
       'es-ES': 'Selecciona el servicio que deseas',
       'es-MX': 'Selecciona el servicio que deseas',
       'es-BO': 'Selecciona el servicio que deseas',
+    },
+    status: {
+      'en-US': 'Status',
+      'es-ES': 'Estado',
+      'es-MX': 'Estado',
+      'es-BO': 'Estado',
+    },
+    tripInformation: {
+      'en-US': 'Trip Information',
+      'es-ES': 'Información del viaje',
+      'es-MX': 'Información del viaje',
+      'es-BO': 'Información del viaje',
+    },
+    driverOnRoad: {
+      'en-US': 'Driver on road',
+      'es-ES': 'Conductor en camino',
+      'es-MX': 'Conductor en camino',
+      'es-BO': 'Conductor en camino',
+    },
+    driverArrived: {
+      'en-US': 'Driver arrived',
+      'es-ES': 'Conductor llegó',
+      'es-MX': 'Conductor llegó',
+      'es-BO': 'Conductor llegó',
+    },
+    tripInProgress: {
+      'en-US': 'Trip in progress',
+      'es-ES': 'Viaje en curso',
+      'es-MX': 'Viaje en curso',
+      'es-BO': 'Viaje en curso',
+    },
+    tripCompleted: {
+      'en-US': 'Trip completed',
+      'es-ES': 'Viaje finalizado',
+      'es-MX': 'Viaje finalizado',
+      'es-BO': 'Viaje finalizado',
+    },
+    tripCancelled: {
+      'en-US': 'Trip cancelled',
+      'es-ES': 'Viaje cancelado',
+      'es-MX': 'Viaje cancelado',
+      'es-BO': 'Viaje cancelado',
+    },
+    tripExpired: {
+      'en-US': 'Trip expired',
+      'es-ES': 'Viaje expirado',
+      'es-MX': 'Viaje expirado',
+      'es-BO': 'Viaje expirado',
+    },
+    unknownStatus: {
+      'en-US': 'Unknown status',
+      'es-ES': 'Estado desconocido',
+      'es-MX': 'Estado desconocido',
+      'es-BO': 'Estado desconocido',
     },
   });
 

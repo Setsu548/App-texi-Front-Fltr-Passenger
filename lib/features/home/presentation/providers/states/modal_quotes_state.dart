@@ -9,4 +9,14 @@ class ModalQuotesState {
     required this.isVisible,
     required this.tripQuotes,
   });
+
+  ModalQuotesState copyWith({
+    bool? isVisible,
+    AsyncValue<TripQuoteResEntity>? tripQuotes,
+  }) {
+    return ModalQuotesState(
+      isVisible: isVisible ?? this.isVisible,
+      tripQuotes: tripQuotes ?? this.tripQuotes,
+    );
+  }
 }

@@ -9,6 +9,7 @@ import 'package:texi_passenger/core/router/app_router.dart';
 import 'package:texi_passenger/core/theme/styles_for_texts.dart';
 import 'package:texi_passenger/core/widgets/custom_snack_bar.dart';
 import 'package:texi_passenger/core/widgets/elevated_button_widget.dart';
+import 'package:texi_passenger/core/widgets/loading_screen.dart';
 import 'package:texi_passenger/features/home/presentation/providers/home_provider.dart';
 import 'package:texi_passenger/features/home/presentation/providers/modal_quotes_provider.dart';
 import 'package:texi_passenger/features/home/presentation/widgets/address_selector.dart';
@@ -24,6 +25,7 @@ class HomePage extends ConsumerWidget {
     final state = ref.watch(homeProvider);
     final notifier = ref.read(homeProvider.notifier);
     final modalQuotesState = ref.watch(modalQuotesProvider);
+    final modalQuotesNotifier = ref.read(modalQuotesProvider.notifier);
 
     return Stack(
       children: [
@@ -169,12 +171,37 @@ class HomePage extends ConsumerWidget {
           ),
         ),
         Positioned(
+          top: 0,
+          right: 0,
+          left: 0,
+          child: modalQuotesState.isVisible
+              ? GestureDetector(
+                  onTap: () {
+                    modalQuotesNotifier.toggleModalQuotes();
+                  },
+                  child: Container(
+                    height: 80.h,
+                    width: 100.w,
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surface.withValues(alpha: 0.75),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.sp),
+                        topRight: Radius.circular(20.sp),
+                      ),
+                    ),
+                  ),
+                )
+              : const SizedBox.shrink(),
+        ),
+        Positioned(
           bottom: -5,
           left: 0,
           right: 0,
           child: modalQuotesState.isVisible
               ? Container(
-                  height: 28.85.h,
+                  height: 32.85.h,
                   width: 100.w,
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
@@ -194,6 +221,9 @@ class HomePage extends ConsumerWidget {
                 )
               : const SizedBox.shrink(),
         ),
+        modalQuotesState.tripQuotes.isLoading && modalQuotesState.isVisible
+            ? const LoadingScreen()
+            : const SizedBox.shrink(),
       ],
     );
   }

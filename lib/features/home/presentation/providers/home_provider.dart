@@ -5,7 +5,7 @@ import 'package:texi_passenger/core/lang/extension_lang.dart';
 import 'package:texi_passenger/core/theme/app_theme.dart';
 import 'package:texi_passenger/features/home/data/repo_impl/map_repository_imp.dart';
 import 'package:texi_passenger/features/home/domain/repo/map_repository.dart';
-import 'package:texi_passenger/features/home/presentation/providers/states/home.state.dart';
+import 'package:texi_passenger/features/home/presentation/providers/states/home_state.dart';
 
 final mapRepositoryProvider = Provider<MapRepository>((ref) {
   return MapRepositoryImp();
