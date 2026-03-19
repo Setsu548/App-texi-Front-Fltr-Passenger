@@ -12,7 +12,7 @@ class TripOffersProvider extends Notifier<TripOffersState> {
   Future<void> getTripOffers(TripEntity trip) async {
     state = TripOffersState(tripResEntity: AsyncValue.loading());
     final tripOffers = await ref.read(travelRepoProvider).createTrip(trip);
-    state = TripOffersState(tripResEntity: AsyncValue.data(tripOffers));
+    state = TripOffersState(tripResEntity: AsyncValue.data(tripOffers.data!));
   }
 }
 

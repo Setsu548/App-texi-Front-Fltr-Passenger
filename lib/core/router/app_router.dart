@@ -6,6 +6,7 @@ import 'package:texi_passenger/features/auth/presentation/pages/verify_code_page
 import 'package:texi_passenger/features/home/presentation/pages/home_page.dart';
 import 'package:texi_passenger/features/travel/data/models/travel_info_model.dart';
 import 'package:texi_passenger/features/travel/presentation/pages/travel_info_page.dart';
+import 'package:texi_passenger/features/travel/presentation/widgets/waiting_driver_widget.dart';
 
 class AppRouter {
   static final AppRouter _instance = AppRouter._internal();
@@ -22,6 +23,7 @@ class AppRouter {
   static const String passengerProfilePage = 'passenger-profile';
   static const String offlinePage = '/offline';
   static const String travelInfoPage = '/travel-info';
+  static const String waitingDriverPage = '/waiting-driver';
 
   late final GoRouter router = GoRouter(
     initialLocation: authPage,
@@ -51,6 +53,10 @@ class AppRouter {
       GoRoute(
         path: offlinePage,
         builder: (context, state) => const OfflinePage(),
+      ),
+      GoRoute(
+        path: waitingDriverPage,
+        builder: (context, state) => const WaitingDriverWidget(),
       ),
     ],
   );

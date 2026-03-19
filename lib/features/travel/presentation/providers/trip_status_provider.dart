@@ -15,4 +15,8 @@ class TripStatusProvider extends Notifier<String> {
   void setStatus(String status) {
     state = status;
   }
+
+  void reset() {
+    state = driverOnRoad.i18n;
+  }
 }

@@ -2,7 +2,7 @@ class TripQuoteResEntity {
   final CityQuoteResEntity city;
   final double distanceKm;
   final int durationMinutes;
-  final List<ServiceQuoteResEntity> options;
+  final List<ServiceOptionsResEntity> options;
 
   TripQuoteResEntity({
     required this.city,
@@ -19,12 +19,12 @@ class CityQuoteResEntity {
   CityQuoteResEntity({required this.id, required this.name});
 }
 
-class ServiceQuoteResEntity {
+class ServiceOptionsResEntity {
   final String serviceTypeId;
   final String serviceTypeName;
   final double estimatedPrice;
 
-  ServiceQuoteResEntity({
+  ServiceOptionsResEntity({
     required this.serviceTypeId,
     required this.serviceTypeName,
     required this.estimatedPrice,

@@ -20,7 +20,7 @@ class HomeState {
     this.originAddress = 'Obteniendo ubicación...',
     this.destinationAddress = '¿A dónde vas?',
     this.isSelectingOrigin = false,
-    this.isSelectingDestination = false,
+    this.isSelectingDestination = true,
     this.markers = const {},
     this.polylines = const {},
     this.selectedVehicleId = '1',
@@ -55,5 +55,4 @@ class HomeState {
       selectedQuickAction: selectedQuickAction ?? this.selectedQuickAction,
     );
   }
-
 }

@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:phonecodes/phonecodes.dart';
 import 'package:texi_passenger/core/const/data_api_response.dart';
-import 'package:texi_passenger/core/const/dio_provider.dart';
+import 'package:texi_passenger/core/providers/dio_provider.dart';
 import 'package:texi_passenger/core/const/enums.dart';
 import 'package:texi_passenger/features/auth/data/models/passenger_send_code_res_model.dart';
 import 'package:texi_passenger/features/auth/data/repo_impl/auth_repo_impl.dart';

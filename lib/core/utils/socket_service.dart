@@ -16,7 +16,7 @@ class SocketService {
       }).build(),
     );
     _socket.connect();
-    _socket.onConnect((_) {
+    /* _socket.onConnect((_) {
       print('Connected to server');
     });
     _socket.onDisconnect((_) {
@@ -24,7 +24,7 @@ class SocketService {
     });
     _socket.onError((data) {
       print('Error: $data');
-    });
+    }); */
   }
 
   void sendMessage(String event, dynamic data) {
@@ -33,6 +33,10 @@ class SocketService {
 
   void onMessage(String event, Function(dynamic) handler) {
     _socket.on(event, handler);
+  }
+
+  void offMessage(String event) {
+    _socket.off(event);
   }
 
   void disconnect() {

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:texi_passenger/core/lang/extension_lang.dart';
-import 'package:texi_passenger/core/providers/socket_provider.dart';
+import 'package:texi_passenger/core/router/app_router.dart';
 import 'package:texi_passenger/core/theme/styles_for_texts.dart';
 import 'package:texi_passenger/features/home/presentation/providers/modal_quotes_provider.dart';
 import 'package:texi_passenger/features/home/services/trip_quote_services.dart';
-import 'package:go_router/go_router.dart';
-import 'package:texi_passenger/core/router/app_router.dart';
-import 'package:texi_passenger/features/travel/data/models/travel_info_model.dart';
+import 'package:texi_passenger/features/travel/services/travel_info_services.dart';
 
 class ModalContent extends ConsumerWidget {
   const ModalContent({super.key});
@@ -57,27 +56,16 @@ class ModalContent extends ConsumerWidget {
                           final option = data.options[index];
                           return InkWell(
                             onTap: () async {
-                              final socket = await ref.read(
-                                socketProvider.future,
-                              );
-                              if (socket != null) {
-                                socket.onMessage('trip:accepted', (data) {
-                                  final travelInfo = TravelInfoModel.fromJson(
-                                    data,
-                                  );
-                                  if (context.mounted) {
-                                    context.push(
-                                      AppRouter.travelInfoPage,
-                                      extra: travelInfo,
-                                    );
-                                  }
-                                });
-                              }
+                              await TravelInfoServices().initSocket(ref);
                               TripQuoteServices().createTrip(
                                 ref,
                                 data.city.id,
                                 option,
                               );
+                              if (context.mounted) {
+                                TravelInfoServices().acceptedTrip(ref);
+                                context.go(AppRouter.waitingDriverPage);
+                              }
                             },
                             child: Container(
                               width: 38.5.w,
@@ -125,14 +113,20 @@ class ModalContent extends ConsumerWidget {
                 );
               },
               error: (error, stack) => Center(child: Text(error.toString())),
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () => Center(
+                child: Image.asset(
+                  'assets/images/loader_image.gif',
+                  height: 15.h,
+                  width: 15.w,
+                ),
+              ),
             ),
-            TextButton(
+            /* TextButton(
               onPressed: () {
-                ref.read(modalQuotesProvider.notifier).toggleModalQuotes();
+                context.pop();
               },
               child: Text(cancel.i18n),
-            ),
+            ), */
           ],
         ),
       ),

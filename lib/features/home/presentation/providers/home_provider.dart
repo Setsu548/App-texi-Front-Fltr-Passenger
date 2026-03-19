@@ -158,8 +158,9 @@ class HomeNotifier extends Notifier<HomeState> {
   }
 
   Future<void> _drawPolyline() async {
-    if (state.currentPosition == null || state.destinationPosition == null)
+    if (state.currentPosition == null || state.destinationPosition == null) {
       return;
+    }
 
     final points = await _repository.getRoutePolyline(
       state.currentPosition!,

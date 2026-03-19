@@ -1,45 +1,43 @@
 import 'dart:async';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:texi_passenger/core/router/app_router.dart';
+
+enum ConnectionStatus { online, offline, checking }
 
 class InternetService with WidgetsBindingObserver {
-  Timer? _timer;
-  bool _isOfflinePageVisible = false;
+  final _controller = StreamController<ConnectionStatus>.broadcast();
+
+  Stream<ConnectionStatus> get stream => _controller.stream;
+
+  late final StreamSubscription _connectivitySub;
 
   InternetService() {
-    WidgetsBinding.instance.addObserver(this);
+    _connectivitySub = Connectivity().onConnectivityChanged.listen(
+      (_) => _checkInternet(),
+    );
+
+    _checkInternet();
   }
 
-  void start() {
-    _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
-      bool hasInternet = await InternetConnection().hasInternetAccess;
-      if (!hasInternet && !_isOfflinePageVisible) {
-        _isOfflinePageVisible = true;
-        AppRouter().router.push(AppRouter.offlinePage).then((value) {
-          _isOfflinePageVisible = false;
-        });
-      } else if (hasInternet && _isOfflinePageVisible) {
-        if (AppRouter().router.canPop()) {
-          AppRouter().router.pop();
-        } else {
-          AppRouter().router.go(AppRouter.authPage);
-        }
-        _isOfflinePageVisible = false;
-      }
-    });
-  }
+  Future<void> _checkInternet() async {
+    _controller.add(ConnectionStatus.checking);
 
-  void stop() {
-    _timer?.cancel();
-  }
+    final hasInternet = await InternetConnection().hasInternetAccess;
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.detached) {
-      stop();
-      WidgetsBinding.instance.removeObserver(this);
+    if (hasInternet) {
+      _controller.add(ConnectionStatus.online);
+    } else {
+      _controller.add(ConnectionStatus.offline);
     }
-    super.didChangeAppLifecycleState(state);
+  }
+
+  Future<bool> checkNow() async {
+    return await InternetConnection().hasInternetAccess;
+  }
+
+  void dispose() {
+    _connectivitySub.cancel();
+    _controller.close();
   }
 }

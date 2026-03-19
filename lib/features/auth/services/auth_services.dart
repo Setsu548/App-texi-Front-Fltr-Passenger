@@ -7,7 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:texi_passenger/core/const/data_api_response.dart';
-import 'package:texi_passenger/core/const/dio_provider.dart';
+import 'package:texi_passenger/core/providers/dio_provider.dart';
 import 'package:texi_passenger/core/utils/image_picker_services.dart';
 import 'package:texi_passenger/core/utils/secure_storage_services.dart';
 import 'package:texi_passenger/features/auth/data/models/passenger_data_model.dart';

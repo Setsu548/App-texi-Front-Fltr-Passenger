@@ -35,7 +35,7 @@ class ModalQuotesProvider extends Notifier<ModalQuotesState> {
     toggleModalQuotes();
     state = ModalQuotesState(
       isVisible: state.isVisible,
-      tripQuotes: AsyncValue.data(tripQuotes),
+      tripQuotes: AsyncValue.data(tripQuotes.data!),
     );
   }
 }
