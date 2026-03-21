@@ -46,6 +46,7 @@ const tripCompleted = 'Viaje finalizado';
 const tripCancelled = 'Viaje cancelado';
 const tripExpired = 'Viaje expirado';
 const unknownStatus = 'Estado desconocido';
+const ok = 'Aceptar';
 
 extension Localization on String {
   static const _translations = ConstTranslations('es-MX', {
@@ -316,6 +317,12 @@ extension Localization on String {
       'es-ES': 'Estado desconocido',
       'es-MX': 'Estado desconocido',
       'es-BO': 'Estado desconocido',
+    },
+    ok: {
+      'en-US': 'OK',
+      'es-ES': 'Aceptar',
+      'es-MX': 'Aceptar',
+      'es-BO': 'Aceptar',
     },
   });
 

@@ -1,7 +1,9 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:texi_passenger/core/lang/extension_lang.dart';
 import 'package:texi_passenger/core/providers/socket_provider.dart';
 import 'package:texi_passenger/core/router/app_router.dart';
+import 'package:texi_passenger/features/home/presentation/providers/home_provider.dart';
 import 'package:texi_passenger/features/travel/presentation/providers/driver_location_provider.dart';
 import 'package:texi_passenger/features/travel/presentation/providers/trip_status_provider.dart';
 
@@ -27,7 +29,9 @@ class TravelInfoServices {
         final status = data['status'];
         String displayText = '';
         if (status == 'arrived') {
+          HapticFeedback.heavyImpact();
           displayText = driverArrived.i18n;
+          ref.read(tripAlertProvider.notifier).setAlert(true);
         } else if (status == 'started') {
           displayText = tripInProgress.i18n;
         } else if (status == 'completed') {
@@ -38,6 +42,7 @@ class TravelInfoServices {
           socket.offMessage('trip:status');
           socket.offMessage('trip:driver_location');
           socket.offMessage('trip:accepted');
+          ref.read(homeProvider.notifier).reset();
           return;
         } else if (status == 'cancelled' || status == 'expired') {
           final reason = data['reason'];
@@ -50,6 +55,7 @@ class TravelInfoServices {
           socket.offMessage('trip:status');
           socket.offMessage('trip:driver_location');
           socket.offMessage('trip:accepted');
+          ref.read(homeProvider.notifier).reset();
           return;
         } else {
           displayText = status?.toString() ?? unknownStatus.i18n;

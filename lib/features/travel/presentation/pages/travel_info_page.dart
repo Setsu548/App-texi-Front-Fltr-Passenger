@@ -8,6 +8,7 @@ import 'package:texi_passenger/core/widgets/another_elevated_button_widget.dart'
 import 'package:texi_passenger/features/travel/data/models/travel_info_model.dart';
 import 'package:texi_passenger/features/travel/presentation/providers/driver_location_provider.dart';
 import 'package:texi_passenger/features/travel/presentation/providers/trip_status_provider.dart';
+import 'package:texi_passenger/features/travel/presentation/widgets/alert_arrive_driver.dart';
 import 'package:texi_passenger/features/travel/services/travel_info_services.dart';
 
 class TravelInfoPage extends ConsumerStatefulWidget {
@@ -59,6 +60,17 @@ class _TravelInfoPageState extends ConsumerState<TravelInfoPage> {
     final currentStatusText = ref.watch(tripStatusProvider);
     final driverLocation = ref.watch(driverLocationProvider);
 
+    ref.listen(tripAlertProvider, (previous, next) {
+      if (next == true) {
+        showDialog(
+          context: context,
+          builder: (context) => const AlertArriveDriver(),
+        ).then((_) {
+          ref.read(tripAlertProvider.notifier).reset();
+        });
+      }
+    });
+
     // Animate camera when driver location changes
     if (driverLocation.position != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -82,7 +94,6 @@ class _TravelInfoPageState extends ConsumerState<TravelInfoPage> {
         ),
       );
     }
-
     // Initial camera position
     final initialPosition = driverLocation.position ?? const LatLng(0, 0);
     final initialZoom = driverLocation.position != null ? 16.0 : 14.0;
@@ -144,7 +155,7 @@ class _TravelInfoPageState extends ConsumerState<TravelInfoPage> {
                 ),
               ),
               SizedBox(height: 1.5.h),
-              AnotherElevatedButtonWidget(label: cancel.i18n),
+              //AnotherElevatedButtonWidget(label: cancel.i18n),
             ],
           ),
         ),

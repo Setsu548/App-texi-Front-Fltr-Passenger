@@ -20,3 +20,22 @@ class TripStatusProvider extends Notifier<String> {
     state = driverOnRoad.i18n;
   }
 }
+
+class TripAlertNotifier extends Notifier<bool> {
+  @override
+  bool build() {
+    return false;
+  }
+
+  void setAlert(bool alert) {
+    state = alert;
+  }
+
+  void reset() {
+    state = false;
+  }
+}
+
+final tripAlertProvider = NotifierProvider<TripAlertNotifier, bool>(
+  TripAlertNotifier.new,
+);

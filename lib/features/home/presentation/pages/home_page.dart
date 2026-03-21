@@ -73,7 +73,7 @@ class HomePage extends ConsumerWidget {
                       },
                     ),
                     SizedBox(height: 2.h),
-                    SingleChildScrollView(
+                    /* SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
@@ -100,7 +100,7 @@ class HomePage extends ConsumerWidget {
                           ),
                         ],
                       ),
-                    ),
+                    ), */
                     SizedBox(height: 2.h),
                     Container(
                       height: 51.55.h,
