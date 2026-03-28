@@ -72,6 +72,21 @@ class AuthPage extends ConsumerWidget {
                           );
                           return;
                         }
+                        if (phoneController.text.trim().length != 8) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            customSnackBar(
+                              phoneMustBe8Characters.i18n,
+                              context,
+                            ),
+                          );
+                          return;
+                        }
+                        if (int.tryParse(phoneController.text.trim()) == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            customSnackBar(phoneMustBeNumeric.i18n, context),
+                          );
+                          return;
+                        }
                         final phone = phoneController.text.trim();
                         final passengerData = await AuthServices.requestingData(
                           phone,

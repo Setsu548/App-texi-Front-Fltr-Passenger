@@ -30,7 +30,7 @@ const offlineMessage =
     'Parece que no tienes conexión a internet en este momento. Por favor, verifica tu red e intenta de nuevo.';
 const backToHome = 'Volver al inicio';
 const origin = 'Origen';
-const errorGettingLocation = 'Error al obtener la ubicación';
+const errorGettingLocation = 'Seleccione su origen o destino';
 const destination = 'Destino';
 const solicitRequest = 'Solicitar Viaje';
 const gettingLocation = 'Obteniendo ubicación...';
@@ -47,6 +47,10 @@ const tripCancelled = 'Viaje cancelado';
 const tripExpired = 'Viaje expirado';
 const unknownStatus = 'Estado desconocido';
 const ok = 'Aceptar';
+const howDoYouRateTheDriver = '¿Cómo calificas al conductor?';
+const rateDriver = 'Calificar conductor';
+const phoneMustBe8Characters = 'El número de teléfono debe tener 8 caracteres';
+const phoneMustBeNumeric = 'El número de teléfono debe ser numérico';
 
 extension Localization on String {
   static const _translations = ConstTranslations('es-MX', {
@@ -223,10 +227,10 @@ extension Localization on String {
       'es-BO': 'Origen',
     },
     errorGettingLocation: {
-      'en-US': 'Error getting location',
-      'es-ES': 'Error al obtener la ubicación',
-      'es-MX': 'Error al obtener la ubicación',
-      'es-BO': 'Error al obtener la ubicación',
+      'en-US': 'Select your origin or destination',
+      'es-ES': 'Seleccione su origen o destino',
+      'es-MX': 'Seleccione su origen o destino',
+      'es-BO': 'Seleccione su origen o destino',
     },
     destination: {
       'en-US': 'Destination',
@@ -323,6 +327,30 @@ extension Localization on String {
       'es-ES': 'Aceptar',
       'es-MX': 'Aceptar',
       'es-BO': 'Aceptar',
+    },
+    howDoYouRateTheDriver: {
+      'en-US': 'How do you rate the driver?',
+      'es-ES': '¿Cómo calificas al conductor?',
+      'es-MX': '¿Cómo calificas al conductor?',
+      'es-BO': '¿Cómo calificas al conductor?',
+    },
+    rateDriver: {
+      'en-US': 'Rate driver',
+      'es-ES': 'Calificar conductor',
+      'es-MX': 'Calificar conductor',
+      'es-BO': 'Calificar conductor',
+    },
+    phoneMustBe8Characters: {
+      'en-US': 'Phone number must be 8 characters',
+      'es-ES': 'El número de teléfono debe tener 8 caracteres',
+      'es-MX': 'El número de teléfono debe tener 8 caracteres',
+      'es-BO': 'El número de teléfono debe tener 8 caracteres',
+    },
+    phoneMustBeNumeric: {
+      'en-US': 'Phone number must be numeric',
+      'es-ES': 'El número de teléfono debe ser numérico',
+      'es-MX': 'El número de teléfono debe ser numérico',
+      'es-BO': 'El número de teléfono debe ser numérico',
     },
   });
 

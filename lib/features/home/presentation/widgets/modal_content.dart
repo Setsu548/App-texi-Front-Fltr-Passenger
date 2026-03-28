@@ -5,6 +5,8 @@ import 'package:sizer/sizer.dart';
 import 'package:texi_passenger/core/lang/extension_lang.dart';
 import 'package:texi_passenger/core/router/app_router.dart';
 import 'package:texi_passenger/core/theme/styles_for_texts.dart';
+import 'package:texi_passenger/core/widgets/custom_snack_bar.dart';
+import 'package:texi_passenger/core/const/global_exceptions.dart';
 import 'package:texi_passenger/features/home/presentation/providers/modal_quotes_provider.dart';
 import 'package:texi_passenger/features/home/services/trip_quote_services.dart';
 import 'package:texi_passenger/features/travel/services/travel_info_services.dart';
@@ -56,15 +58,29 @@ class ModalContent extends ConsumerWidget {
                           final option = data.options[index];
                           return InkWell(
                             onTap: () async {
-                              await TravelInfoServices().initSocket(ref);
-                              TripQuoteServices().createTrip(
-                                ref,
-                                data.city.id,
-                                option,
-                              );
-                              if (context.mounted) {
-                                TravelInfoServices().acceptedTrip(ref);
-                                context.go(AppRouter.waitingDriverPage);
+                              try {
+                                await TravelInfoServices().initSocket(ref);
+                                await TripQuoteServices().createTrip(
+                                  ref,
+                                  data.city.id,
+                                  option,
+                                );
+                                if (context.mounted) {
+                                  TravelInfoServices().acceptedTrip(ref);
+                                  context.go(AppRouter.waitingDriverPage);
+                                }
+                              } on GlobalExceptions catch (e) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    customSnackBar(e.message, context),
+                                  );
+                                }
+                              } catch (e) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    customSnackBar(e.toString(), context),
+                                  );
+                                }
                               }
                             },
                             child: Container(

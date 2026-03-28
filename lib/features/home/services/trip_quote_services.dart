@@ -34,11 +34,11 @@ class TripQuoteServices {
     }
   }
 
-  void createTrip(
+  Future<void> createTrip(
     WidgetRef ref,
     String cityId,
     ServiceOptionsResEntity option,
-  ) {
+  ) async {
     final homeState = ref.read(homeProvider);
     final origin = homeState.currentPosition;
     final destination = homeState.destinationPosition;
@@ -59,7 +59,7 @@ class TripQuoteServices {
         serviceTypeId: option.serviceTypeId,
         estimatedPrice: option.estimatedPrice,
       );
-      ref.read(tripOffersProvider.notifier).getTripOffers(tripEntity);
+      await ref.read(tripOffersProvider.notifier).getTripOffers(tripEntity);
     }
   }
 }

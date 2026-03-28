@@ -12,6 +12,8 @@ import 'package:texi_passenger/features/home/presentation/widgets/address_select
 import 'package:texi_passenger/features/home/presentation/widgets/modal_content.dart';
 import 'package:texi_passenger/features/home/presentation/widgets/quick_action_button.dart';
 import 'package:texi_passenger/features/home/services/trip_quote_services.dart';
+import 'package:texi_passenger/features/travel/presentation/providers/rate_providers.dart';
+import 'package:texi_passenger/features/travel/presentation/widgets/alert_rate_driver.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -20,6 +22,32 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeProvider);
     final notifier = ref.read(homeProvider.notifier);
+
+    ref.listen(showRateAlertProvider, (previous, next) {
+      if (next) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => const AlertRateDriver(),
+          ).then((_) {
+            ref.read(showRateAlertProvider.notifier).setShowRateAlert(false);
+          });
+        });
+      }
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (ref.read(showRateAlertProvider)) {
+        ref.read(showRateAlertProvider.notifier).setShowRateAlert(false);
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => const AlertRateDriver(),
+        );
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
