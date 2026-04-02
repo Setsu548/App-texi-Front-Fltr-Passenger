@@ -5,6 +5,8 @@ import 'package:texi_passenger/core/router/app_router.dart';
 import 'package:texi_passenger/core/theme/app_theme.dart';
 import 'package:texi_passenger/core/widgets/app_connection_listener.dart';
 
+import 'package:texi_passenger/core/widgets/app_position_listener.dart';
+
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
@@ -17,7 +19,11 @@ class MainApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           routerConfig: AppRouter().router,
           builder: (context, child) {
-            return AppConnectionListener(child: child!);
+            return AppConnectionListener(
+              child: AppPositionListener(
+                child: child!,
+              ),
+            );
           },
           theme: AppTheme.lightTheme,
           locale: I18n.locale,

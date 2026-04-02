@@ -4,6 +4,7 @@ class PassengerAuthResEntity {
   final String status;
   final int typeUserId;
   final String token;
+  final String refreshToken;
 
   PassengerAuthResEntity({
     required this.isVerified,
@@ -11,5 +12,6 @@ class PassengerAuthResEntity {
     required this.status,
     required this.typeUserId,
     required this.token,
+    required this.refreshToken,
   });
 }

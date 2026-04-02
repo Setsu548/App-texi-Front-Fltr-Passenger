@@ -51,6 +51,17 @@ const howDoYouRateTheDriver = '¿Cómo calificas al conductor?';
 const rateDriver = 'Calificar conductor';
 const phoneMustBe8Characters = 'El número de teléfono debe tener 8 caracteres';
 const phoneMustBeNumeric = 'El número de teléfono debe ser numérico';
+const offlinePositionTitle = '¡Ups! Sin ubicación';
+const offlinePositionMessage =
+    'Parece que tu GPS está desactivado. Por favor, actívalo para continuar.';
+const offerTrip = 'Ofertar Viaje';
+const activateLocation = 'Activar Ubicación';
+const locationPermissionTitle = 'Permisos de ubicación requeridos';
+const locationPermissionMessage =
+    'La aplicación no puede funcionar sin los permisos de ubicación. Por favor, actívelos en la configuración.';
+const openSettings = 'Abrir Configuración';
+const appWillCloseIn = 'La aplicación se cerrará en %s segundos...';
+const tokenNotFound = 'Token no encontrado';
 
 extension Localization on String {
   static const _translations = ConstTranslations('es-MX', {
@@ -351,6 +362,67 @@ extension Localization on String {
       'es-ES': 'El número de teléfono debe ser numérico',
       'es-MX': 'El número de teléfono debe ser numérico',
       'es-BO': 'El número de teléfono debe ser numérico',
+    },
+    offlinePositionTitle: {
+      'en-US': 'Oops! No location',
+      'es-ES': '¡Ups! Sin ubicación',
+      'es-MX': '¡Ups! Sin ubicación',
+      'es-BO': '¡Ups! Sin ubicación',
+    },
+    offlinePositionMessage: {
+      'en-US': 'It seems your GPS is disabled. Please turn it on to continue.',
+      'es-ES':
+          'Parece que tu GPS está desactivado. Por favor, actívalo para continuar.',
+      'es-MX':
+          'Parece que tu GPS está desactivado. Por favor, actívalo para continuar.',
+      'es-BO':
+          'Parece que tu GPS está desactivado. Por favor, actívalo para continuar.',
+    },
+    offerTrip: {
+      'en-US': 'Offer trip',
+      'es-ES': 'Ofertar viaje',
+      'es-MX': 'Ofertar viaje',
+      'es-BO': 'Ofertar viaje',
+    },
+    activateLocation: {
+      'en-US': 'Activate location',
+      'es-ES': 'Activar ubicación',
+      'es-MX': 'Activar ubicación',
+      'es-BO': 'Activar ubicación',
+    },
+    locationPermissionTitle: {
+      'en-US': 'Location permissions required',
+      'es-ES': 'Permisos de ubicación requeridos',
+      'es-MX': 'Permisos de ubicación requeridos',
+      'es-BO': 'Permisos de ubicación requeridos',
+    },
+    locationPermissionMessage: {
+      'en-US':
+          'The application cannot function without location permissions. Please enable them in settings.',
+      'es-ES':
+          'La aplicación no puede funcionar sin los permisos de ubicación. Por favor, actívelos en la configuración.',
+      'es-MX':
+          'La aplicación no puede funcionar sin los permisos de ubicación. Por favor, actívelos en la configuración.',
+      'es-BO':
+          'La aplicación no puede funcionar sin los permisos de ubicación. Por favor, actívelos en la configuración.',
+    },
+    openSettings: {
+      'en-US': 'Open Settings',
+      'es-ES': 'Abrir Configuración',
+      'es-MX': 'Abrir Configuración',
+      'es-BO': 'Abrir Configuración',
+    },
+    appWillCloseIn: {
+      'en-US': 'The application will close in %s seconds...',
+      'es-ES': 'La aplicación se cerrará en %s segundos...',
+      'es-MX': 'La aplicación se cerrará en %s segundos...',
+      'es-BO': 'La aplicación se cerrará en %s segundos...',
+    },
+    tokenNotFound: {
+      'en-US': 'Token not found',
+      'es-ES': 'Token no encontrado',
+      'es-MX': 'Token no encontrado',
+      'es-BO': 'Token no encontrado',
     },
   });
 

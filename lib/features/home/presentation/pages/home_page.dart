@@ -14,12 +14,43 @@ import 'package:texi_passenger/features/home/presentation/widgets/quick_action_b
 import 'package:texi_passenger/features/home/services/trip_quote_services.dart';
 import 'package:texi_passenger/features/travel/presentation/providers/rate_providers.dart';
 import 'package:texi_passenger/features/travel/presentation/widgets/alert_rate_driver.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:texi_passenger/core/providers/position_status_provider.dart';
+import 'package:texi_passenger/core/widgets/location_permissions.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  bool _isButtonDisabled = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final permissionState = ref.watch(permissionStatusProvider);
+
+    if (permissionState.isLoading) {
+      return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        body: Center(
+          child: Image.asset(
+            'assets/images/loader_image.gif',
+            height: 20.h,
+            width: 20.w,
+          ),
+        ),
+      );
+    } else if (permissionState.hasValue) {
+      final permission = permissionState.value!;
+      if (permission != LocationPermission.whileInUse &&
+          permission != LocationPermission.always) {
+        return const LocationPermissions();
+      }
+    }
+
     final state = ref.watch(homeProvider);
     final notifier = ref.read(homeProvider.notifier);
 
@@ -164,42 +195,59 @@ class HomePage extends ConsumerWidget {
               children: [
                 ElevatedButtonWidget(
                   label: solicitRequest.i18n,
-                  onPressed: () async {
-                    try {
-                      await TripQuoteServices().getTripQuotes(ref);
-                      Scaffold.of(innerContext).showBottomSheet((
-                        // ✅ innerContext correcto
-                        BuildContext context,
-                      ) {
-                        return Container(
-                          height: 32.85.h,
-                          width: 100.w,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surface,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20.sp),
-                              topRight: Radius.circular(20.sp),
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Theme.of(context).colorScheme.primary,
-                                blurRadius: 5,
-                                offset: const Offset(0, -2),
-                              ),
-                            ],
-                          ),
-                          child: ModalContent(),
-                        );
-                      });
-                    } on GlobalExceptions catch (e) {
-                      if (innerContext.mounted) {
-                        // ✅ también innerContext aquí
-                        ScaffoldMessenger.of(
-                          innerContext,
-                        ).showSnackBar(customSnackBar(e.message, innerContext));
-                      }
-                    }
-                  },
+                  onPressed: _isButtonDisabled
+                      ? null
+                      : () async {
+                          setState(() {
+                            _isButtonDisabled = true;
+                          });
+                          try {
+                            await TripQuoteServices().getTripQuotes(ref);
+                            final controller = Scaffold.of(innerContext)
+                                .showBottomSheet((
+                                  // ✅ innerContext correcto
+                                  BuildContext context,
+                                ) {
+                                  return Container(
+                                    height: 35.85.h,
+                                    width: 100.w,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.surface,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(20.sp),
+                                        topRight: Radius.circular(20.sp),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                          blurRadius: 5,
+                                          offset: const Offset(0, -2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: ModalContent(),
+                                  );
+                                });
+                            await controller.closed;
+                          } on GlobalExceptions catch (e) {
+                            if (innerContext.mounted) {
+                              // ✅ también innerContext aquí
+                              ScaffoldMessenger.of(innerContext).showSnackBar(
+                                customSnackBar(e.message, innerContext),
+                              );
+                            }
+                          } finally {
+                            if (mounted) {
+                              setState(() {
+                                _isButtonDisabled = false;
+                              });
+                            }
+                          }
+                        },
                 ),
                 /* TextButton(
                   onPressed: () {

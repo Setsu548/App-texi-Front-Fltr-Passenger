@@ -134,4 +134,10 @@ class AuthRepoImpl implements AuthRepo {
       );
     }
   }
+  
+  @override
+  Future<DataApiResponse<PassengerAuthResEntity>> refreshPassengerToken(Dio dio) {
+    // TODO: implement refreshPassengerToken
+    throw UnimplementedError();
+  }
 }

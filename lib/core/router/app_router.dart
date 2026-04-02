@@ -1,12 +1,15 @@
 import 'package:go_router/go_router.dart';
+import 'package:texi_passenger/core/router/transitions_helper.dart';
 import 'package:texi_passenger/core/widgets/offline_page.dart';
 import 'package:texi_passenger/features/auth/presentation/pages/auth_page.dart';
 import 'package:texi_passenger/features/auth/presentation/pages/passenger_profile_page.dart';
+import 'package:texi_passenger/features/auth/presentation/pages/splash_page.dart';
 import 'package:texi_passenger/features/auth/presentation/pages/verify_code_page.dart';
 import 'package:texi_passenger/features/home/presentation/pages/home_page.dart';
 import 'package:texi_passenger/features/travel/data/models/travel_info_model.dart';
 import 'package:texi_passenger/features/travel/presentation/pages/travel_info_page.dart';
 import 'package:texi_passenger/features/travel/presentation/widgets/waiting_driver_widget.dart';
+import 'package:texi_passenger/core/widgets/offline_position_page.dart';
 
 class AppRouter {
   static final AppRouter _instance = AppRouter._internal();
@@ -17,6 +20,7 @@ class AppRouter {
 
   AppRouter._internal();
 
+  static const String splashPage = '/';
   static const String authPage = '/auth';
   static const String homePage = '/home';
   static const String verifyCodePage = 'verify-code';
@@ -24,39 +28,71 @@ class AppRouter {
   static const String offlinePage = '/offline';
   static const String travelInfoPage = '/travel-info';
   static const String waitingDriverPage = '/waiting-driver';
+  static const String offlinePositionPage = '/offline-position';
 
   late final GoRouter router = GoRouter(
-    initialLocation: authPage,
+    initialLocation: splashPage,
     routes: [
       GoRoute(
+        path: splashPage,
+        pageBuilder: (context, state) =>
+            TransitionsHelper.fadeTransition(state, const SplashPage()),
+      ),
+      GoRoute(
         path: authPage,
-        builder: (context, state) => const AuthPage(),
+        pageBuilder: (context, state) =>
+            TransitionsHelper.fadeTransition(state, const AuthPage()),
         routes: [
           GoRoute(
             path: verifyCodePage,
-            builder: (context, state) => const VerifyCodePage(),
+            pageBuilder: (context, state) => TransitionsHelper.slideTransition(
+              state,
+              const VerifyCodePage(),
+            ),
           ),
           GoRoute(
             path: passengerProfilePage,
-            builder: (context, state) => const PassengerProfilePage(),
+            pageBuilder: (context, state) =>
+                TransitionsHelper.slideUpTransition(
+                  state,
+                  const PassengerProfilePage(),
+                ),
           ),
         ],
       ),
-      GoRoute(path: homePage, builder: (context, state) => const HomePage()),
+      GoRoute(
+        path: homePage,
+        pageBuilder: (context, state) =>
+            TransitionsHelper.fadeTransition(state, const HomePage()),
+      ),
       GoRoute(
         path: travelInfoPage,
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final data = state.extra as TravelInfoModel?;
-          return TravelInfoPage(data: data);
+          return TransitionsHelper.fadeTransition(
+            state,
+            TravelInfoPage(data: data),
+          );
         },
       ),
       GoRoute(
         path: offlinePage,
-        builder: (context, state) => const OfflinePage(),
+        pageBuilder: (context, state) =>
+            TransitionsHelper.fadeTransition(state, const OfflinePage()),
       ),
       GoRoute(
         path: waitingDriverPage,
-        builder: (context, state) => const WaitingDriverWidget(),
+        pageBuilder: (context, state) => TransitionsHelper.fadeTransition(
+          state,
+          const WaitingDriverWidget(),
+        ),
+      ),
+      GoRoute(
+        path: offlinePositionPage,
+        pageBuilder: (context, state) => TransitionsHelper.fadeTransition(
+          state,
+          const OfflinePositionPage(),
+        ),
       ),
     ],
   );

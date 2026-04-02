@@ -40,7 +40,16 @@ class AlertRateDriver extends ConsumerWidget {
               shape: BoxShape.circle,
               color: Theme.of(context).primaryColor,
             ),
-            child: Image.network(driverInfo.profilePhotoUrl),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: Image.network(
+                driverInfo.profilePhotoUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(Icons.person, size: 50);
+                },
+              ),
+            ),
           ),
           SizedBox(height: 2.h),
           Text(

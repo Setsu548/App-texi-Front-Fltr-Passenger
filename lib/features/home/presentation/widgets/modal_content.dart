@@ -7,15 +7,22 @@ import 'package:texi_passenger/core/router/app_router.dart';
 import 'package:texi_passenger/core/theme/styles_for_texts.dart';
 import 'package:texi_passenger/core/widgets/custom_snack_bar.dart';
 import 'package:texi_passenger/core/const/global_exceptions.dart';
+import 'package:texi_passenger/features/home/domain/entities/trip_quote_entities/trip_quote_res_entity.dart';
 import 'package:texi_passenger/features/home/presentation/providers/modal_quotes_provider.dart';
 import 'package:texi_passenger/features/home/services/trip_quote_services.dart';
 import 'package:texi_passenger/features/travel/services/travel_info_services.dart';
 
-class ModalContent extends ConsumerWidget {
+class ModalContent extends ConsumerStatefulWidget {
   const ModalContent({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ModalContent> createState() => _ModalContentState();
+}
+
+class _ModalContentState extends ConsumerState<ModalContent> {
+  ServiceOptionsResEntity? selectedOption;
+  @override
+  Widget build(BuildContext context) {
     final modalQuotesState = ref.watch(modalQuotesProvider);
 
     return Material(
@@ -58,38 +65,19 @@ class ModalContent extends ConsumerWidget {
                           final option = data.options[index];
                           return InkWell(
                             onTap: () async {
-                              try {
-                                await TravelInfoServices().initSocket(ref);
-                                await TripQuoteServices().createTrip(
-                                  ref,
-                                  data.city.id,
-                                  option,
-                                );
-                                if (context.mounted) {
-                                  TravelInfoServices().acceptedTrip(ref);
-                                  context.go(AppRouter.waitingDriverPage);
-                                }
-                              } on GlobalExceptions catch (e) {
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    customSnackBar(e.message, context),
-                                  );
-                                }
-                              } catch (e) {
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    customSnackBar(e.toString(), context),
-                                  );
-                                }
-                              }
+                              setState(() {
+                                selectedOption = option;
+                              });
                             },
                             child: Container(
                               width: 38.5.w,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20.sp),
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.primary.withValues(alpha: 0.55),
+                                color: selectedOption == option
+                                    ? Theme.of(context).colorScheme.primary
+                                          .withValues(alpha: 0.75)
+                                    : Theme.of(context).colorScheme.primary
+                                          .withValues(alpha: 0.25),
                               ),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
@@ -125,6 +113,38 @@ class ModalContent extends ConsumerWidget {
                         },
                       ),
                     ),
+                    SizedBox(height: 2.5.h),
+                    TextButton(
+                      child: Text(offerTrip.i18n),
+                      onPressed: () async {
+                        if (selectedOption != null) {
+                          try {
+                            await TravelInfoServices().initSocket(ref);
+                            await TripQuoteServices().createTrip(
+                              ref,
+                              data.city.id,
+                              selectedOption!,
+                            );
+                            if (context.mounted) {
+                              TravelInfoServices().acceptedTrip(ref);
+                              context.go(AppRouter.waitingDriverPage);
+                            }
+                          } on GlobalExceptions catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                customSnackBar(e.message, context),
+                              );
+                            }
+                          } catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                customSnackBar(e.toString(), context),
+                              );
+                            }
+                          }
+                        }
+                      },
+                    ),
                   ],
                 );
               },
@@ -132,8 +152,8 @@ class ModalContent extends ConsumerWidget {
               loading: () => Center(
                 child: Image.asset(
                   'assets/images/loader_image.gif',
-                  height: 15.h,
-                  width: 15.w,
+                  height: 19.75.h,
+                  width: 19.75.h,
                 ),
               ),
             ),

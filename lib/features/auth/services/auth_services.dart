@@ -2,11 +2,14 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:texi_passenger/core/const/data_api_response.dart';
+import 'package:texi_passenger/core/lang/extension_lang.dart';
 import 'package:texi_passenger/core/providers/dio_provider.dart';
 import 'package:texi_passenger/core/utils/image_picker_services.dart';
 import 'package:texi_passenger/core/utils/secure_storage_services.dart';
@@ -62,7 +65,7 @@ class AuthServices {
       final authResData = await repo.loginAccount(
         PassengerAuthDataModel.fromRawJson(passengerData).toEntity(),
       );
-      saveAuthToken(authResData.data!);
+      saveAuthTokens(authResData.data!);
     } else {
       final passengerInfo = await requestingData(phone, ref);
       await secureStorage.saveToken('phone', phone);
@@ -71,7 +74,7 @@ class AuthServices {
         PassengerAuthDataModel.fromEntity(passengerInfo).toRawJson(),
       );
       final authResData = await repo.loginAccount(passengerInfo);
-      saveAuthToken(authResData.data!);
+      saveAuthTokens(authResData.data!);
     }
   }
 
@@ -88,13 +91,17 @@ class AuthServices {
     );
   }
 
-  static Future<void> saveAuthToken(
+  static Future<void> saveAuthTokens(
     PassengerAuthResEntity passengerAuthResEntity,
   ) async {
     final secureStorage = GetIt.instance<SecureStorageService>();
     await secureStorage.saveToken(
       SecureKeys.authToken,
       passengerAuthResEntity.token,
+    );
+    await secureStorage.saveToken(
+      SecureKeys.refreshToken,
+      passengerAuthResEntity.refreshToken,
     );
   }
 
@@ -107,7 +114,7 @@ class AuthServices {
     if (response.success) {
       final passenger = response.data;
       if (passenger!.isVerified == true && passenger.status == 'active') {
-        saveAuthToken(passenger);
+        saveAuthTokens(passenger);
         return true;
       }
       return false;
@@ -181,5 +188,39 @@ class AuthServices {
     );
     final response = await repo.registerPassenger(passengerProfileEntity);
     return response;
+  }
+
+  static Future<bool> isPassengerTokenExpired() async {
+    final secureStorage = GetIt.instance<SecureStorageService>();
+    final token = await secureStorage.getString(SecureKeys.authToken);
+    if (token == null) {
+      throw Exception(tokenNotFound.i18n);
+    }
+    return Jwt.isExpired(token);
+  }
+
+  static Future<void> refreshPassengerToken() async {
+    final secureStorage = GetIt.instance<SecureStorageService>();
+    final token = await secureStorage.getString(SecureKeys.refreshToken);
+    await dotenv.load();
+    final url = dotenv.env['BASE_URL'];
+    if (token == null) {
+      throw Exception(tokenNotFound.i18n);
+    }
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: url!,
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
+    final repo = AuthRepoImpl(dio);
+    final response = await repo.refreshPassengerToken(dio);
+    if (response.success) {
+      saveAuthTokens(response.data!);
+    } else {
+      throw Exception(response.message);
+    }
   }
 }

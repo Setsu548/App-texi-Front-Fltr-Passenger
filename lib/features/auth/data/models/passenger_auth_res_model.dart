@@ -7,6 +7,7 @@ class PassengerAuthResModel extends PassengerAuthResEntity {
     required super.status,
     required super.typeUserId,
     required super.token,
+    required super.refreshToken,
   });
 
   factory PassengerAuthResModel.fromEntity(PassengerAuthResEntity entity) {
@@ -16,6 +17,7 @@ class PassengerAuthResModel extends PassengerAuthResEntity {
       status: entity.status,
       typeUserId: entity.typeUserId,
       token: entity.token,
+      refreshToken: entity.refreshToken,
     );
   }
 
@@ -26,6 +28,7 @@ class PassengerAuthResModel extends PassengerAuthResEntity {
       status: status,
       typeUserId: typeUserId,
       token: token,
+      refreshToken: refreshToken,
     );
   }
 
@@ -36,6 +39,7 @@ class PassengerAuthResModel extends PassengerAuthResEntity {
       status: json['status'] ?? '',
       typeUserId: json['type_user_id'] ?? 0,
       token: json['token'] ?? '',
+      refreshToken: json['refresh_token'] ?? '',
     );
   }
 }
